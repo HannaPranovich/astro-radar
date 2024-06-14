@@ -9,7 +9,8 @@ export async function fetchAsteroids(requestParams: RequestParams) {
   }
 
   const headers = response.headers;
-  console.log("HEADERS", headers);
+  // @ts-ignore
+  console.log("HEADERS x-ratelimit-remaining", headers['x-ratelimit-remaining']);
 
   const { near_earth_objects: asteroids }: FetchAsteroidsResponse = await response.json();
 

@@ -1,31 +1,38 @@
 import { fetchAsteroids } from "@/lib/data";
-import { Asteroid } from "@/lib/definitions";
 import { getRequestParams, prepareRenderingData } from "@/lib/utils";
+import { DataList } from "@/components/dataList";
+import { Dela_Gothic_One } from "next/font/google";
+
+import Image from "next/image";
+import earth from "../../public/earth.png";
+
+const dela = Dela_Gothic_One({ subsets: ["latin"], weight: "400" });
 
 export default async function Home() {
   const requestParams = getRequestParams();
+  prepareRenderingData;
   const asteroids = prepareRenderingData(await fetchAsteroids(requestParams));
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <h1>Asteroids list</h1>
-        <ul>
-          {asteroids.map(([data, asteroidsListByDate]: [string, Asteroid[]]) => (
-            <li key={data}>
-              <h2>{data}</h2>
-              <ul>{asteroidsListByDate.map((asteroid)=>(
-                <li key={asteroid.id}>
-                  <p>Name: {asteroid.name}</p>
-                  <p>Diameter: {asteroid.estimated_diameter.kilometers.estimated_diameter_max}km</p>
-                  {asteroid.is_potentially_hazardous_asteroid? <p>dangerous</p>:null}
-                  <p>Kilometers: {asteroid.close_approach_data[0].miss_distance.kilometers}</p>
-                </li>
-              ))}</ul>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </main>
+    <>
+      <header className="p-6">
+        <h1 className={`${dela.className} text-4xl`}>
+          AstroRadar
+        </h1>
+      </header>
+      <main className="flex px-6">
+        <div className="w-2/4">
+          <Image
+            src={earth}
+            width={640}
+            height={640}
+            alt="Picture of the author"
+          />
+        </div>
+        <div className="w-2/4">
+          <DataList asteroids={asteroids} />
+        </div>
+      </main>
+    </>
   );
 }
