@@ -1,24 +1,25 @@
-import { fetchAsteroids } from "@/lib/data";
-import { getRequestParams, prepareRenderingData } from "@/lib/utils";
 import { DataList } from "@/components/dataList";
 import { Dela_Gothic_One } from "next/font/google";
 
 import Image from "next/image";
 import earth from "../../public/earth.png";
+import { formatDate, getAsteroids } from "@/utils";
 
 const dela = Dela_Gothic_One({ subsets: ["latin"], weight: "400" });
 
+const initialRequestParams = {
+  startDate: formatDate(new Date()),
+  endDate: formatDate(new Date()),
+};
+
+
 export default async function Home() {
-  const requestParams = getRequestParams();
-  prepareRenderingData;
-  const asteroids = prepareRenderingData(await fetchAsteroids(requestParams));
+  const initialAsteroids = await getAsteroids(initialRequestParams);
 
   return (
     <>
       <header className="p-6">
-        <h1 className={`${dela.className} text-4xl`}>
-          AstroRadar
-        </h1>
+        <h1 className={`${dela.className} text-4xl`}>AstroRadar</h1>
       </header>
       <main className="flex px-6">
         <div className="w-2/4">
@@ -30,7 +31,10 @@ export default async function Home() {
           />
         </div>
         <div className="w-2/4">
-          <DataList asteroids={asteroids} />
+          <DataList
+            initialRequestParams={initialRequestParams}
+            initialAsteroids={initialAsteroids}
+          />
         </div>
       </main>
     </>

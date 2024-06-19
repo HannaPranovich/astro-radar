@@ -1,13 +1,10 @@
-import { Asteroid } from "@/lib/definitions";
-import { getDataForAsteroidCard } from "@/lib/utils";
+import { Asteroid } from "@/types";
 
 export const Card = ({ asteroid }: { asteroid: Asteroid }) => {
-  const { name, diameter, isDangerous, kilometers } =
-    getDataForAsteroidCard(asteroid);
+  const { name, diameter, isDangerous, kilometers } = asteroid;
 
   return (
-    <div 
-    className="p-2.5 rounded-xl bg-gray-700 backdrop-blur-sm shadow-[inset_2px_-2px_0_0_rgba(255,255,255,0.15)] border-2 border-[rgba(255,255,255,0.15)]">
+    <div className="rounded-xl border-2 border-[rgba(255,255,255,0.15)] bg-gray-700 p-2.5 shadow-[inset_2px_-2px_0_0_rgba(255,255,255,0.15)] backdrop-blur-sm">
       <p>Name: {name}</p>
       <p>Diameter: {diameter}km</p>
       {isDangerous ? <p>dangerous</p> : null}
