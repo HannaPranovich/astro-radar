@@ -3,13 +3,13 @@ import { Dela_Gothic_One } from "next/font/google";
 
 import Image from "next/image";
 import earth from "../../public/earth.png";
-import { formatDate, getAsteroids } from "@/utils";
+import { formatRequestedDate, getAsteroids } from "@/utils";
 
 const dela = Dela_Gothic_One({ subsets: ["latin"], weight: "400" });
 
 const initialRequestParams = {
-  startDate: formatDate(new Date()),
-  endDate: formatDate(new Date()),
+  startDate: formatRequestedDate(new Date()),
+  endDate: formatRequestedDate(new Date()),
 };
 
 

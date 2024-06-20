@@ -1,6 +1,6 @@
 export type Asteroid = {
-  diameter: number;
-  isDangerous: boolean; 
+  diameter: number | string;
+  isDangerous: boolean;
   id: number;
   kilometers: string;
   name: string;

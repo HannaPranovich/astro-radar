@@ -1,7 +1,7 @@
 import { Asteroid, AsteroidFromResponse, FetchAsteroidsResponse } from "@/types";
 
 
-export const formatDate = (date: Date) => date.toISOString().split('T')[0];
+export const formatRequestedDate = (date: Date) => date.toISOString().split('T')[0];
 
 export const formatToDisplayDate = (inputDate: string) => {
   const [year, month, day] = inputDate.split('-').map(Number);
@@ -21,9 +21,7 @@ export const selectAndRenameObjectKeys = (asteroid: AsteroidFromResponse): Aster
   const {
     id,
     name,
-    estimated_diameter: {
-      kilometers: { estimated_diameter_max: diameter },
-    },
+    estimated_diameter,
     is_potentially_hazardous_asteroid: isDangerous,
     close_approach_data: [
       {
@@ -32,7 +30,13 @@ export const selectAndRenameObjectKeys = (asteroid: AsteroidFromResponse): Aster
     ],
   } = asteroid;
 
-  return { diameter, id, isDangerous, kilometers, name }
+  return {
+    diameter: estimated_diameter?.kilometers?.estimated_diameter_max || "no data",
+    id,
+    isDangerous,
+    kilometers,
+    name
+  }
 }
 
 const sortByObjectKeys = (unsortedDatesObject: FetchAsteroidsResponse["near_earth_objects"]) => {
@@ -49,7 +53,6 @@ const sortByObjectKeys = (unsortedDatesObject: FetchAsteroidsResponse["near_eart
 
 export const processFetchedData = (fetchedAsteroids: FetchAsteroidsResponse): [string, Asteroid[]][] => {
   const sortedAsteroids = sortByObjectKeys(fetchedAsteroids["near_earth_objects"]);
-
   const processedData: [string, Asteroid[]][] = Object.entries(sortedAsteroids).map(([key, asteroidsList]) => {
     const updatedValue = asteroidsList.map((asteroid) => selectAndRenameObjectKeys(asteroid))
     return [key, updatedValue]

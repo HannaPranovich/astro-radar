@@ -1,11 +1,13 @@
 "use client";
-import { Asteroid, RequestParams } from "@/types";
+import { useInView } from "react-intersection-observer";
+import { useEffect, useState } from "react";
+
 import { Card } from "../card";
-import { useState } from "react";
-import { fetchAsteroids } from "@/actions/fetchAsteroids";
-import { formatToDisplayDate } from "@/utils";
 
+import { formatToDisplayDate, getAsteroids, getDateAfterDays } from "@/utils";
+import { Asteroid, RequestParams } from "@/types";
 
+const REQUESTED_NUMBER_OF_DAYS = 8;
 export const DataList = ({
   initialAsteroids,
   initialRequestParams,
@@ -13,39 +15,56 @@ export const DataList = ({
   initialRequestParams: RequestParams;
   initialAsteroids: [string, Asteroid[]][];
 }) => {
-  // const [asteroids, setAsteroids] =
-  //   useState<[string, AsteroidFromResponse[]][]>(initialAsteroids);
-  // const [requestedPeriod, setRequestedPeriod] =
-  //   useState<RequestParams>(initialRequestParams);
+  const [asteroids, setAsteroids] =
+    useState<[string, Asteroid[]][]>(initialAsteroids);
+  const [requestedPeriod, setRequestedPeriod] =
+    useState<RequestParams>(initialRequestParams);
+  const { ref, inView } = useInView();
 
-  // const loadMoreAsteroids = async () => {
-  //   const apiAsteroids = prepareRenderingData(
-  //     await fetchAsteroids(requestParams),
-  //   );
-  //   setAsteroids([...asteroids, ...apiAsteroids]);
-  // };
+  const loadMoreAsteroids = async () => {
+    const requestParams = {
+      startDate: getDateAfterDays(requestedPeriod.endDate, 1),
+      endDate: getDateAfterDays(
+        requestedPeriod.endDate,
+        REQUESTED_NUMBER_OF_DAYS,
+      ),
+    };
+
+    const apiAsteroids = await getAsteroids(requestParams);
+
+    setAsteroids([...asteroids, ...apiAsteroids]);
+    setRequestedPeriod(requestParams);
+  };
+
+  useEffect(() => {
+    if (inView) {
+      loadMoreAsteroids();
+    }
+  }, [inView]);
 
   return (
     <div>
       <ul className="max-w-md">
-        {initialAsteroids.map(
-          ([data, asteroidsListByDate]: [string, Asteroid[]]) => (
-            <li key={data}>
-              <h2 className="py-6 text-center text-2xl font-semibold">
-                {formatToDisplayDate(data)}
-              </h2>
-              <ul>
-                {asteroidsListByDate.map((asteroid) => (
-                  <li key={asteroid.id} className="mt-6">
-                    <Card asteroid={asteroid} />
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ),
-        )}
+        {asteroids.map(([data, asteroidsListByDate]: [string, Asteroid[]]) => (
+          <li key={data}>
+            <h2 className="py-6 text-center text-2xl font-semibold">
+              {formatToDisplayDate(data)}
+            </h2>
+            <ul>
+              {asteroidsListByDate.map((asteroid) => (
+                <li key={asteroid.id} className="mt-6">
+                  <Card asteroid={asteroid} />
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
       </ul>
-      {/* <button onClick={loadMoreUsers}>Load more</button> */}
+      {/* <button onClick={loadMoreAsteroids}>Load more</button>
+       */}
+       <div ref={ref}>
+        Loading...
+      </div>
     </div>
   );
 };

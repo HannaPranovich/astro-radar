@@ -24,7 +24,7 @@ export type AsteroidFromResponse = {
       estimated_diameter_min: number;
       estimated_diameter_max: number;
     }
-  },
+  } | undefined,
   is_potentially_hazardous_asteroid: boolean;
   close_approach_data: [
     {

@@ -8,7 +8,8 @@ export const Card = ({ asteroid }: { asteroid: Asteroid }) => {
       <p>Name: {name}</p>
       <p>Diameter: {diameter}km</p>
       {isDangerous ? <p>dangerous</p> : null}
-      <p>Kilometers: {kilometers}</p>
+      {kilometers ?  <p>Kilometers: {kilometers}</p> : null}
+     
     </div>
   );
 };
