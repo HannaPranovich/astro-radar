@@ -2,7 +2,7 @@ export type AsteroidFromResponse = {
   links: {
     self: string;
   };
-  id: number;
+  id: string;
   neo_reference_id: string;
   name: string;
   nasa_jpl_url: string;
@@ -51,7 +51,7 @@ export type AsteroidFromResponse = {
 export type FetchAsteroidsResponse = {
   links: {
     next: string;
-    previous: string;
+    prev: string;
     self: string;
   },
   element_count: number,

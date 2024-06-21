@@ -1,0 +1,59 @@
+@property --gradX {
+  syntax: "<percentage>";
+  initial-value: 50%;
+  inherits: true;
+}
+
+@property --gradY {
+  syntax: "<percentage>";
+  initial-value: 0%;
+  inherits: true;
+}
+
+@keyframes borderRadial {
+  20% {
+    --gradX: 100%;
+    --gradY: 50%;
+  }
+  40% {
+    --gradX: 100%;
+    --gradY: 100%;
+  }
+  60% {
+    --gradX: 50%;
+    --gradY: 100%;
+  }
+  80% {
+    --gradX: 0%;
+    --gradY: 50%;
+  }
+  100% {
+    --gradX: 50%;
+    --gradY: 0%;
+  }
+}
+
+.animatedButton {
+  @apply mt-8 px-6 py-3 text-lg;
+
+	--gradX: 100%;
+	--gradY: 50%;
+  --light-color: rgba(168, 239, 255, 1);
+  --dark-color: rgba(168, 239, 255, 0.1);
+
+  border: 3px solid transparent;
+  border-image: radial-gradient(
+      ellipse at var(--gradX) var(--gradY),
+      var(--light-color),
+      var(--light-color) 10%,
+      var(--dark-color) 40%
+    )
+    25;
+  
+  animation: borderRadial 4s linear infinite;
+}
+
+.animatedButton:hover {
+  border: 3px solid var(--primary-color);
+  color: var(--primary-color);
+}

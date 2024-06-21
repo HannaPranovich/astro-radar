@@ -1,20 +1,23 @@
-
 import Image from "next/image";
-import sky from "../../../public/night-sky.jpg";
+import sky from "../../public/images/galaxy.jpg";
 
 export function Background() {
   return (
-    <Image
-      alt="sky"
-      src={sky}
-      placeholder="blur"
-      quality={100}
-      fill
-      sizes="100vw"
-      style={{
-        objectFit: 'cover',
-        zIndex: -1
-      }}
-    />
-  )
+    <>
+      <div className="fixed -z-1 h-screen w-screen overflow-hidden">
+        <Image
+          alt="sky"
+          src={sky}
+          placeholder="blur"
+          quality={100}
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+          }}
+        />
+      </div>
+      <div className="fixed -z-1 h-screen w-screen overflow-hidden bg-transparentBlue"></div>
+    </>
+  );
 }

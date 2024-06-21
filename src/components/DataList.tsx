@@ -2,12 +2,13 @@
 import { useInView } from "react-intersection-observer";
 import { useEffect, useState } from "react";
 
-import { Card } from "../card";
+import { Card } from "./Card";
 
 import { formatToDisplayDate, getAsteroids, getDateAfterDays } from "@/utils";
 import { Asteroid, RequestParams } from "@/types";
 
 const REQUESTED_NUMBER_OF_DAYS = 8;
+
 export const DataList = ({
   initialAsteroids,
   initialRequestParams,

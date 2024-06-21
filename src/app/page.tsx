@@ -1,40 +1,36 @@
-import { DataList } from "@/components/dataList";
-import { Dela_Gothic_One } from "next/font/google";
+"use client";
 
-import Image from "next/image";
-import earth from "../../public/earth.png";
-import { formatRequestedDate, getAsteroids } from "@/utils";
+import { useRouter } from "next/navigation";
 
-const dela = Dela_Gothic_One({ subsets: ["latin"], weight: "400" });
+import { spaceBoard } from "@/fonts";
+import { Background } from "@/components/Background";
+import styles from "../../styles/AnimatedButton.module.css";
 
-const initialRequestParams = {
-  startDate: formatRequestedDate(new Date()),
-  endDate: formatRequestedDate(new Date()),
-};
-
-
-export default async function Home() {
-  const initialAsteroids = await getAsteroids(initialRequestParams);
+export default function Home() {
+  const router = useRouter();
 
   return (
     <>
-      <header className="p-6">
-        <h1 className={`${dela.className} text-4xl`}>AstroRadar</h1>
-      </header>
-      <main className="flex px-6">
-        <div className="w-2/4">
-          <Image
-            src={earth}
-            width={640}
-            height={640}
-            alt="Picture of the author"
-          />
-        </div>
-        <div className="w-2/4">
-          <DataList
-            initialRequestParams={initialRequestParams}
-            initialAsteroids={initialAsteroids}
-          />
+      <Background />
+      <main>
+        <div className="ml-10 pt-40">
+          <h1 className={`${spaceBoard.className} text-6xl`}>
+            Astro<span className="text-primary">Radar</span>
+          </h1>
+          <p className="mt-8 max-w-xl text-lg">
+            Explore the cosmos with Asteroid Tracker. The platform provides
+            real-time information about asteroids that fly close to Earth.
+            Discover detailed data on each asteroid, including its size, speed,
+            and proximity to our planet. <br />
+            Dive in and explore the wonders of our universe!
+          </p>
+          <button
+            className={styles.animatedButton}
+            type="button"
+            onClick={() => router.push("/asteroids")}
+          >
+            Explore
+          </button>
         </div>
       </main>
     </>
